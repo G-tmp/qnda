@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>epub.js</title>
+      <link rel="stylesheet" type="text/css" href="./ex.css">
+   </head>
+   <body>
+      <input type="file" id="file-input" hidden="">
+      <div id="drop-target" class="filter" style="visibility: visible;">
+          <div>
+               <svg class="icon empty-state-icon" width="72" height="72" aria-hidden="true">
+                  <path d="M36 18s-6-6-12-6-15 6-15 6v42s9-6 15-6 12 6 12 6c4-4 8-6 12-6s12 2 15 6V18c-6-4-12-6-15-6-4 0-8 2-12 6m0 0v42"></path>
+               </svg>
+               <h1>Drop a book here!</h1>
+               <p>Or <button id="file-button">choose a file</button> to open it.</p>
+          </div>
+      </div>
+
+      <div id="dimming-overlay" aria-hidden="true"></div>
+      <div id="side-bar">
+         <div id="side-bar-header">
+            <img id="side-bar-cover">
+            <div>
+               <h1 id="side-bar-title"></h1>
+               <p id="side-bar-author"></p>
+            </div>
+         </div>
+         <div id="toc-view">
+         </div>
+      </div>
+      <div id="header-bar" class="toolbar">
+         <button id="side-bar-button" aria-label="Show sidebar">
+            <svg class="icon" width="24" height="24" aria-hidden="true">
+               <path d="M 4 6 h 16 M 4 12 h 16 M 4 18 h 16"></path>
+            </svg>
+         </button>
+<!--          <div id="menu-button" class="menu-container">
+            <button aria-label="Show settings" aria-haspopup="true">
+               <svg class="icon" width="24" height="24" aria-hidden="true">
+                 <path d="M5 12.7a7 7 0 0 1 0-1.4l-1.8-2 2-3.5 2.7.5a7 7 0 0 1 1.2-.7L10 3h4l.9 2.6 1.2.7 2.7-.5 2 3.4-1.8 2a7 7 0 0 1 0 1.5l1.8 2-2 3.5-2.7-.5a7 7 0 0 1-1.2.7L14 21h-4l-.9-2.6a7 7 0 0 1-1.2-.7l-2.7.5-2-3.4 1.8-2Z"></path>
+                 <circle cx="12" cy="12" r="3"></circle>
+               </svg>
+            </button>
+            <ul role="menu" class="menu"><ul role="group" aria-label="Layout"><li role="menuitemradio" aria-checked="true">Paginated</li><li role="menuitemradio" aria-checked="false">Scrolled</li></ul></ul>
+         </div> -->
+      </div>
+      <!-- <select id="toc" class="toc"></select> -->
+      <div id="viewer" class="scrolled"></div>
+      <a id="prev" href="#prev" class="arrow">‹</a>
+      <a id="next" href="#next" class="arrow">›</a>
+
+
+      <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.93/dist/epub.min.js"></script>
+      <script src="./reader.js"></script>
+   </body>
+</html>
