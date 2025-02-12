@@ -36,14 +36,15 @@ async function open(file){
    await rendition.display();
 
    console.log(book)
+   document.title = book.package.metadata.title;
+
    next.addEventListener("click", (e) => {
       rendition.next();
       e.preventDefault();
    });
 
    prev.addEventListener("click", (e) => {
-      console.log(prev)
-      window.scrollTo(0,0);
+      // window.scrollTo(0,0);
       rendition.prev();
       e.preventDefault();
    });
@@ -63,7 +64,19 @@ async function open(file){
 
 
    rendition.on("relocated", (location) => {
-      // console.log(location);
+      const listItems = document.querySelectorAll('#toc-view li');
+      listItems.forEach((i) => {
+         let a = i.childNodes[0];
+         let href = a.getAttribute("href");
+         if (location.start.href === href) {
+            a.tabIndex = 0;
+            a.setAttribute('aria-current', 'page');
+            // a.scrollIntoView({ behavior: 'smooth', block: 'center' })
+         } else {
+            a.tabIndex = -1;
+            a.removeAttribute('aria-current');
+         }
+      })
 
       if (location.atEnd) {
          next.style.visibility = "hidden";
@@ -78,6 +91,7 @@ async function open(file){
       }
    });
 
+
    sidebar_button.onclick = () => {
       dimming_overlay.classList.add("show");
       sidebar.classList.add("show");
@@ -88,6 +102,7 @@ async function open(file){
       sidebar.classList.remove("show");
    };
 
+
    book.ready.then(() => {
       sidebar_title.innerText = book.package.metadata.title;
       sidebar_author.innerText = book.package.metadata.creator;
@@ -95,7 +110,7 @@ async function open(file){
          book.archive.createUrl(book.cover)
             .then((url) => sidebar_cover.src = url);
       } else {
-         sidebar_cover.src = book.cover;
+         sidebar_cover.src = "";
       }
 
       const ol = document.createElement("ol")
@@ -107,24 +122,20 @@ async function open(file){
          a.setAttribute("role", "treeitem")
          a.style.paddingInlineStart = "24px"
          a.setAttribute("href", chapter.href);
-         // a.tabIndex = -1
-         // a.setAttribute('aria-current', 'page')
          li.appendChild(a);
+         li.setAttribute('role', 'none');
          ol.appendChild(li);
+
+         let currentItem;
 
          a.onclick = () => {
             let url = a.getAttribute("href");
-            console.log(url)
             rendition.display(url);
             return false;
          };
       });
 
       toc_view.append(ol);
-
-      // toc_view.addEventListener("focusout", () => {
-
-      // });
    });
 
 }
