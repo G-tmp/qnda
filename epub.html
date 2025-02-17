@@ -13,8 +13,8 @@
                <svg class="icon empty-state-icon" width="72" height="72" aria-hidden="true">
                   <path d="M36 18s-6-6-12-6-15 6-15 6v42s9-6 15-6 12 6 12 6c4-4 8-6 12-6s12 2 15 6V18c-6-4-12-6-15-6-4 0-8 2-12 6m0 0v42"></path>
                </svg>
-               <h1>Drop a book here!</h1>
-               <p>Or <button id="file-button">choose a file</button> to open it.</p>
+               <h1><button id="file-button">Choose a file</button></h1>
+               <p>Or <strong>drop a book</strong> to open it.</p>
           </div>
       </div>
 
@@ -43,13 +43,18 @@
                  <circle cx="12" cy="12" r="3"></circle>
                </svg>
             </button>
-            <ul role="menu" class="menu"><ul role="group" aria-label="Layout"><li role="menuitemradio" aria-checked="true">Paginated</li><li role="menuitemradio" aria-checked="false">Scrolled</li></ul></ul>
+            <ul role="menu" class="menu">
+               <ul role="group" aria-label="Layout">
+                  <li role="menuitemradio" aria-checked="true">Paginated</li>
+                  <li role="menuitemradio" aria-checked="false">Scrolled</li>
+               </ul>
+            </ul>
          </div> -->
       </div>
       <!-- <select id="toc" class="toc"></select> -->
       <div id="viewer" class="scrolled"></div>
-      <a id="prev" href="#prev" class="arrow">‹</a>
-      <a id="next" href="#next" class="arrow">›</a>
+      <a id="prev" href="#prev" class="arrow"></a>
+      <a id="next" href="#next" class="arrow"></a>
 
 
       <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>

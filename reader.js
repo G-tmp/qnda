@@ -27,6 +27,8 @@ file_button.onclick = () => {
 }
 
 async function open(file){
+   next.innerText = "›";
+   prev.innerText = "‹";
    document.body.removeChild(drop_target);
    sidebar.style.visibility = "visible";
    headerbar.style.visibility = "visible";
@@ -114,7 +116,7 @@ async function open(file){
       }
 
       const ol = document.createElement("ol")
-      ol.setAttribute('role', 'none')
+      ol.setAttribute('role', 'tree')
       book.navigation.toc.forEach((chapter) => {
          let li = document.createElement("li");
          let a = document.createElement("a");
