@@ -50,38 +50,35 @@ body {
 .empty-state-icon {
     margin: auto;
 }
-.toolbar {
+#toolbar {
     box-sizing: border-box;
-    position: absolute;
+    position: fixed;
     z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    top: 0;
     width: 100%;
     height: 48px;
     padding: 6px;
     transition: opacity 250ms ease;
     visibility: hidden;
 }
-.toolbar button {
+#toolbar button {
     padding: 3px;
     border-radius: 6px;
     background: none;
     border: 0;
     color: GrayText;
 }
-.toolbar button:hover {
+#toolbar button:hover {
     background: rgba(0, 0, 0, .1);
     color: currentcolor;
-}
-#header-bar {
-    position: fixed;
-    top: 0;
 }
 #side-bar {
     visibility: hidden;
     box-sizing: border-box;
-    position: absolute;
+    position: fixed;
     z-index: 2;
     top: 0;
     left: 0;
@@ -96,7 +93,6 @@ body {
     transition: visibility 0s linear 300ms, transform 300ms ease;
 }
 #side-bar.show {
-    position: fixed;
     visibility: visible;
     transform: translateX(0);
     transition-delay: 0s;
@@ -193,7 +189,7 @@ body {
 #toc-view [aria-expanded="false"] + [role="group"] {
     display: none;
 }
-.menu-container {
+/*.menu-container {
     position: relative;
 }
 .menu, .menu ul {
@@ -227,21 +223,7 @@ body {
     background-position: center left;
     background-repeat: no-repeat;
     background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%223%22%2F%3E%3C%2Fsvg%3E');
-}
-.popover {
-    background: Canvas;
-    color: CanvasText;
-    border-radius: 6px;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, .2), 0 0 16px rgba(0, 0, 0, .1), 0 0 32px rgba(0, 0, 0, .1);
-}
-.popover-arrow-down {
-    fill: Canvas;
-    filter: drop-shadow(0 -1px 0 rgba(0, 0, 0, .2));
-}
-.popover-arrow-up {
-    fill: Canvas;
-    filter: drop-shadow(0 1px 0 rgba(0, 0, 0, .2));
-}
+}*/
 
 
 .arrow {
@@ -272,7 +254,7 @@ body {
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding: 40px 0 40px 0;
+/*  padding: 40px 0 40px 0;*/
   position: relative;
   box-shadow: 0 0 4px #ccc;
   background: white;

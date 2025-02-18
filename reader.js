@@ -1,7 +1,7 @@
 'use strict';
 
 const sidebar = document.getElementById("side-bar");
-const headerbar = document.getElementById("header-bar");
+const toolbar = document.getElementById("toolbar");
 const sidebar_button = document.getElementById("side-bar-button");
 const dimming_overlay = document.getElementById("dimming-overlay");
 const sidebar_title = document.getElementById("side-bar-title"); 
@@ -31,7 +31,7 @@ async function open(file){
    prev.innerText = "‹";
    document.body.removeChild(drop_target);
    sidebar.style.visibility = "visible";
-   headerbar.style.visibility = "visible";
+   toolbar.style.visibility = "visible";
 
    var book = await ePub(file);
    var rendition = book.renderTo("viewer", { flow: "scrolled-doc", width: "100%", fullsize: true });
@@ -73,7 +73,7 @@ async function open(file){
          if (location.start.href === href) {
             a.tabIndex = 0;
             a.setAttribute('aria-current', 'page');
-            // a.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            a.scrollIntoView({ behavior: 'smooth', block: 'center' })
          } else {
             a.tabIndex = -1;
             a.removeAttribute('aria-current');
