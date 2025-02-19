@@ -16,12 +16,22 @@ const file_button = document.getElementById("file-button");
 const drop_target = document.getElementById("drop-target");
 
 
+drop_target.addEventListener("dragover", (e) => {
+   e.preventDefault();
+});
+drop_target.addEventListener("drop", (e) => {
+   e.preventDefault();
+   const item = Array.from(e.dataTransfer.items).find(item => item.kind === "file");
+   if (item) {
+      const entry = item.webkitGetAsEntry();
+      open(entry.isFile ? item.getAsFile() : entry);
+   }
+});
 
 file_input.onchange = e => {
    // open(e.target.files[0]).catch(e => console.error(e))
    open(e.target.files[0]);
 }
-
 file_button.onclick = () => {
    file_input.click();
 }

@@ -20,7 +20,6 @@ body {
     font-family: system-ui, sans-serif;
     background: #fafafa;
     color: #333;
-
 }
 #drop-target {
     height: 100vh;
@@ -89,13 +88,13 @@ body {
     flex-direction: column;
     background: Canvas;
     color: CanvasText;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, .2), 0 0 40px rgba(0, 0, 0, .2);
     transition: visibility 0s linear 300ms, transform 300ms ease;
 }
 #side-bar.show {
     visibility: visible;
     transform: translateX(0);
     transition-delay: 0s;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .2), 0 0 40px rgba(0, 0, 0, .2);
 }
 #dimming-overlay {
     position: fixed;
