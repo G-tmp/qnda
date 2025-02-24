@@ -80,7 +80,7 @@ async function open(file){
       listItems.forEach((i) => {
          let a = i.childNodes[0];
          let href = a.getAttribute("href");
-         if (location.start.href === href) {
+         if (location.start.href === href.split("#")[0]) {
             a.tabIndex = 0;
             a.setAttribute('aria-current', 'page');
             a.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -138,11 +138,9 @@ async function open(file){
          li.setAttribute('role', 'none');
          ol.appendChild(li);
 
-         let currentItem;
-
          a.onclick = () => {
-            let url = a.getAttribute("href");
-            rendition.display(url);
+            let href = a.getAttribute("href");
+            rendition.display(href);
             return false;
          };
       });
