@@ -6,7 +6,11 @@ const sidebar_button = document.getElementById("side-bar-button");
 const dimming_overlay = document.getElementById("dimming-overlay");
 const sidebar_title = document.getElementById("side-bar-title"); 
 const sidebar_cover = document.getElementById("side-bar-cover"); 
-const sidebar_author = document.getElementById("side-bar-author"); 
+const sidebar_author = document.getElementById("side-bar-author");
+const menu_button = document.getElementById("menu-button");
+const menu = document.getElementById("menu");
+const small = document.getElementById("small");
+const large = document.getElementById("large");
 const toc_view = document.getElementById("toc-view");
 const next = document.getElementById("next");
 const prev = document.getElementById("prev");
@@ -43,8 +47,10 @@ async function open(file){
    sidebar.style.visibility = "visible";
    toolbar.style.visibility = "visible";
 
-   var book = await ePub(file);
-   var rendition = book.renderTo("viewer", { flow: "scrolled-doc", width: "100%", fullsize: true });
+   const book = await ePub(file);
+   const rendition = await book.renderTo("viewer", { flow: "scrolled-doc", width: "100%", fullsize: true });
+   let fontSize = 17;
+   rendition.themes.fontSize(fontSize + "px");
    await rendition.display();
 
    console.log(book)
@@ -113,6 +119,26 @@ async function open(file){
       dimming_overlay.classList.remove("show");
       sidebar.classList.remove("show");
    };
+
+   window.onblur = () => menu.classList.remove("show");
+   window.onclick = (e) => {
+      if (!menu.parentNode.contains(e.target)){
+         menu.classList.remove("show");
+      }
+   }
+
+   menu_button.onclick = () => {
+      menu.classList.toggle('show');
+   }
+
+   small.onclick = () => {
+      rendition.themes.fontSize(--fontSize + "px");
+      menu.classList.toggle('show');
+   }
+   large.onclick = () => {
+      rendition.themes.fontSize(++fontSize + "px");
+      menu.classList.toggle('show');
+   }
 
 
    book.ready.then(() => {

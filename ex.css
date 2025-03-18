@@ -188,7 +188,7 @@ body {
 #toc-view [aria-expanded="false"] + [role="group"] {
     display: none;
 }
-/*.menu-container {
+.menu-container {
     position: relative;
 }
 .menu, .menu ul {
@@ -218,11 +218,6 @@ body {
 .menu li:hover {
     background: var(--active-bg);
 }
-.menu li[aria-checked="true"] {
-    background-position: center left;
-    background-repeat: no-repeat;
-    background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%223%22%2F%3E%3C%2Fsvg%3E');
-}*/
 
 
 .arrow {
@@ -251,9 +246,8 @@ body {
 #viewer.scrolled {
   overflow: hidden;
   width: 100%;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
-/*  padding: 40px 0 40px 0;*/
   position: relative;
   box-shadow: 0 0 4px #ccc;
   background: white;
