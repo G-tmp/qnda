@@ -80,13 +80,18 @@ async function open(file){
       }
    });
 
-
    rendition.on("relocated", (location) => {
       const listItems = document.querySelectorAll('#toc-view li');
       listItems.forEach((i) => {
          let a = i.childNodes[0];
          let href = a.getAttribute("href");
          if (location.start.href === href.split("#")[0]) {
+            if (i.parentNode.previousElementSibling) {
+               i.parentNode.previousElementSibling.setAttribute("aria-expanded", "true");
+            }
+            if (a.getAttribute("aria-expanded")) {
+               a.setAttribute("aria-expanded", "true");
+            }
             a.tabIndex = 0;
             a.setAttribute('aria-current', 'page');
             a.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -151,27 +156,63 @@ async function open(file){
          sidebar_cover.src = "";
       }
 
-      const ol = document.createElement("ol")
-      ol.setAttribute('role', 'tree')
-      book.navigation.toc.forEach((chapter) => {
-         let li = document.createElement("li");
-         let a = document.createElement("a");
-         a.textContent = chapter.label;
-         a.setAttribute("role", "treeitem")
-         a.style.paddingInlineStart = "24px"
-         a.setAttribute("href", chapter.href);
-         li.appendChild(a);
-         li.setAttribute('role', 'none');
-         ol.appendChild(li);
+      const createExpanderIcon = () => {
+          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+          svg.setAttribute('viewBox', '0 0 13 10')
+          svg.setAttribute('width', '13')
+          svg.setAttribute('height', '13')
+          const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+          polygon.setAttribute('points', '2 1, 12 1, 7 9')
+          svg.append(polygon)
+          return svg
+      }
 
-         a.onclick = () => {
-            let href = a.getAttribute("href");
-            rendition.display(href);
-            return false;
-         };
-      });
+      let id = 0;
+      const recurseAppend = (list, parent, depth) => {
+         id++;
+         const ol = document.createElement("ol");
+         parent.appendChild(ol);
+         if (depth == 0) {
+            ol.setAttribute("role", "tree");
+         } else {
+            ol.setAttribute("role", "group");
+            ol.id = "toc-element-" + (id-1);
+         }
 
-      toc_view.append(ol);
+         list.forEach((chapter) => {
+            const li = document.createElement("li");
+            let a = document.createElement("a");
+            a.textContent = chapter.label;
+            a.setAttribute("role", "treeitem")
+            a.style.paddingInlineStart = `${(depth + 1) * 24}px`
+            a.setAttribute("href", chapter.href);
+            li.appendChild(a);
+            li.setAttribute('role', 'none');
+            ol.appendChild(li);
+
+            a.onclick = (e) => {
+               let href = a.getAttribute("href");
+               rendition.display(href);
+               return false;
+            };
+
+            if (chapter.subitems.length != 0) {
+               a.setAttribute('aria-owns', "toc-element-" + id);
+               a.setAttribute("aria-expanded", "false");
+               recurseAppend(chapter.subitems, li, depth + 1);
+               const icon = createExpanderIcon();
+               icon.onclick = (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  a.setAttribute("aria-expanded", a.getAttribute("aria-expanded") == "true" ? "false" : "true");
+               }
+               a.prepend(icon);
+            }
+         });   
+      }
+
+      recurseAppend(book.navigation.toc, toc_view, 0);
+
    });
 
 }
