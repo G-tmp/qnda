@@ -11,6 +11,7 @@ const menu_button = document.getElementById("menu-button");
 const menu = document.getElementById("menu");
 const small = document.getElementById("small");
 const large = document.getElementById("large");
+const themes = document.getElementById("themes");
 const toc_view = document.getElementById("toc-view");
 const next = document.getElementById("next");
 const prev = document.getElementById("prev");
@@ -51,7 +52,16 @@ async function open(file){
    const rendition = await book.renderTo("viewer", { flow: "scrolled-doc", width: "100%", fullsize: true });
    let fontSize = 17;
    rendition.themes.fontSize(fontSize + "px");
+   rendition.themes.register("custom", {
+      "p, a, span, div ": {
+         "margin": "15px 0 0 !important",
+         "line-height": "1.6 !important"
+      }
+    });
+   rendition.themes.select("custom");
+
    await rendition.display();
+
 
    console.log(book)
    document.title = book.package.metadata.title;
@@ -67,25 +77,29 @@ async function open(file){
       e.preventDefault();
    });
 
-
-   document.addEventListener("keyup", (e) => {
-      // Left Key
+   const keyListener = (e) => {
+      // Left arrow Key
       if ((e.keyCode || e.which) == 37) {
          rendition.prev();
       }
 
-      // Right Key
+      // Right arrow Key
       if ((e.keyCode || e.which) == 39) {
          rendition.next();
       }
-   });
+   }
 
-   rendition.on("relocated", (location) => {
-      const listItems = document.querySelectorAll('#toc-view li');
+   document.addEventListener("keyup", keyListener);
+
+   rendition.on("rendered", (section) => {
+     const iframe = rendition.getContents()[0].document;
+     iframe.addEventListener("keyup", keyListener);
+
+     const listItems = document.querySelectorAll('#toc-view li');
       listItems.forEach((i) => {
          let a = i.childNodes[0];
          let href = a.getAttribute("href");
-         if (location.start.href === href.split("#")[0]) {
+         if (section.href === href.split("#")[0]) {
             if (i.parentNode.previousElementSibling) {
                i.parentNode.previousElementSibling.setAttribute("aria-expanded", "true");
             }
@@ -101,19 +115,18 @@ async function open(file){
          }
       })
 
-      if (location.atEnd) {
-         next.style.visibility = "hidden";
-      } else {
+      if (section.next()) {
          next.style.visibility = "visible";
-      }
-
-      if (location.atStart) {
-         prev.style.visibility = "hidden";
       } else {
-         prev.style.visibility = "visible";
+         next.style.visibility = "hidden";
       }
-   });
+      if (section.prev()) {
+         prev.style.visibility = "visible";
+      } else {
+         prev.style.visibility = "hidden";
+      }
 
+   });
 
    sidebar_button.onclick = () => {
       dimming_overlay.classList.add("show");
@@ -133,18 +146,25 @@ async function open(file){
    }
 
    menu_button.onclick = () => {
-      menu.classList.toggle('show');
+      menu.classList.toggle("show");
    }
 
    small.onclick = () => {
       rendition.themes.fontSize(--fontSize + "px");
-      menu.classList.toggle('show');
    }
    large.onclick = () => {
       rendition.themes.fontSize(++fontSize + "px");
-      menu.classList.toggle('show');
+   }
+   menu.onclick = () => {
+      menu.classList.toggle("show");
    }
 
+   // switch themes not working 
+   // themes.onclick = (e) => {
+   //    if (e.target && e.target.nodeName === "LI") {
+   //       rendition.themes.select(e.target.textContent);         
+   //    }
+   // }
 
    book.ready.then(() => {
       sidebar_title.innerText = book.package.metadata.title;
