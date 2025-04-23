@@ -9,8 +9,10 @@ const sidebar_cover = document.getElementById("side-bar-cover");
 const sidebar_author = document.getElementById("side-bar-author");
 const menu_button = document.getElementById("menu-button");
 const menu = document.getElementById("menu");
-const small = document.getElementById("small");
-const large = document.getElementById("large");
+const fontsize_add = document.getElementById("fontsize-add");
+const fontsize_sub = document.getElementById("fontsize-sub");
+const lineheight_sub = document.getElementById("line-height-sub");
+const lineheight_add = document.getElementById("line-height-add");
 const themes = document.getElementById("themes");
 const toc_view = document.getElementById("toc-view");
 const next = document.getElementById("next");
@@ -50,18 +52,10 @@ async function open(file){
 
    const book = await ePub(file);
    const rendition = await book.renderTo("viewer", { flow: "scrolled-doc", width: "100%", fullsize: true });
-   let fontSize = 17;
-   rendition.themes.fontSize(fontSize + "px");
-   rendition.themes.register("custom", {
-      "p, a, span, div ": {
-         "margin": "15px 0 0 !important",
-         "line-height": "1.6 !important"
-      }
-    });
-   rendition.themes.select("custom");
-
    await rendition.display();
 
+   let fontSize = 17;
+   let lineheight = 16;
 
    console.log(book)
    document.title = book.package.metadata.title;
@@ -92,10 +86,12 @@ async function open(file){
    document.addEventListener("keyup", keyListener);
 
    rendition.on("rendered", (section) => {
-     const iframe = rendition.getContents()[0].document;
-     iframe.addEventListener("keyup", keyListener);
+      // keybroad lose focus after clicking iframe
+      const iframe = rendition.getContents()[0].document;
+      iframe.addEventListener("keyup", keyListener);
 
-     const listItems = document.querySelectorAll('#toc-view li');
+      // find and high light current item in toc
+      const listItems = document.querySelectorAll('#toc-view li');
       listItems.forEach((i) => {
          let a = i.childNodes[0];
          let href = a.getAttribute("href");
@@ -128,6 +124,10 @@ async function open(file){
 
    });
 
+   menu_button.onclick = () => {
+      menu.classList.toggle("show");
+   }
+
    sidebar_button.onclick = () => {
       dimming_overlay.classList.add("show");
       sidebar.classList.add("show");
@@ -145,26 +145,44 @@ async function open(file){
       }
    }
 
-   menu_button.onclick = () => {
-      menu.classList.toggle("show");
+   const applyTheme = () => {
+      let rules = {
+         "body, p, a, span, div ": {
+            "font-size": `${fontSize}px !important`,
+            "line-height": `${lineheight / 10} !important`,
+            "margin": "15px 0 0 !important",
+        },
+      }
+
+      try{
+         if(rendition)
+            rendition.getContents().forEach(c => c.addStylesheetRules(rules));
+      }catch (err){
+         console.err(err);
+      }
    }
 
-   small.onclick = () => {
-      rendition.themes.fontSize(--fontSize + "px");
+   rendition.hooks.content.register(applyTheme.bind());
+
+   fontsize_sub.onclick = () => {
+      fontSize--
+      applyTheme();
    }
-   large.onclick = () => {
-      rendition.themes.fontSize(++fontSize + "px");
+   fontsize_add.onclick = () => {
+      fontSize++
+      applyTheme();
+   }
+   lineheight_sub.onclick = () => {
+      lineheight--
+      applyTheme();
+   }
+   lineheight_add.onclick = () => {
+      lineheight++
+      applyTheme();
    }
    menu.onclick = () => {
       menu.classList.toggle("show");
    }
-
-   // switch themes not working 
-   // themes.onclick = (e) => {
-   //    if (e.target && e.target.nodeName === "LI") {
-   //       rendition.themes.select(e.target.textContent);         
-   //    }
-   // }
 
    book.ready.then(() => {
       sidebar_title.innerText = book.package.metadata.title;
@@ -228,7 +246,7 @@ async function open(file){
                }
                a.prepend(icon);
             }
-         });   
+         });
       }
 
       recurseAppend(book.navigation.toc, toc_view, 0);
@@ -236,4 +254,3 @@ async function open(file){
    });
 
 }
-
