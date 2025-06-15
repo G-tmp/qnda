@@ -7,3 +7,5 @@
 * style from [https://johnfactotum.github.io/foliate-js/reader.html](https://johnfactotum.github.io/foliate-js/reader.html)
 
 * apply custom css https://github.com/futurepress/epub.js/issues/788
+
+* Epub.js Tips https://github.com/johnfactotum/epubjs-tips
