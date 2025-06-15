@@ -11,26 +11,18 @@
 }
 html {
     height: 100%;
-    overflow-y: scroll;
 }
 body {
+          -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+    overflow-y: scroll;
     margin: 0 auto;
     width: 100%;
     font: menu;
     font-family: system-ui, sans-serif;
     background: #fafafa;
     color: #333;
-}
-#drop-target {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    visibility: hidden;
-}
-#drop-target h1 {
-    font-weight: 900;
 }
 #file-button {
     font: inherit;
@@ -48,6 +40,39 @@ body {
 }
 .empty-state-icon {
     margin: auto;
+}
+#drop-target {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    visibility: hidden;
+}
+#drop-target h1 {
+    font-weight: 900;
+}
+#dimming-overlay {
+    visibility: hidden;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .2);
+    opacity: 0;
+    transition: visibility 0s linear 300ms, opacity 300ms ease;
+}
+#dimming-overlay.show {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+}
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 #toolbar {
     box-sizing: border-box;
@@ -95,23 +120,6 @@ body {
     transform: translateX(0);
     transition-delay: 0s;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, .2), 0 0 40px rgba(0, 0, 0, .2);
-}
-#dimming-overlay {
-    position: fixed;
-    visibility: hidden;
-    z-index: 2;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, .2);
-    opacity: 0;
-    transition: visibility 0s linear 300ms, opacity 300ms ease;
-}
-#dimming-overlay.show {
-    visibility: visible;
-    opacity: 1;
-    transition-delay: 0s;
 }
 #side-bar-header {
     padding: 1rem;
@@ -198,7 +206,7 @@ body {
 }
 .menu {
     visibility: hidden;
-    position: absolute;
+    position: fixed;
     right: 0;
     background: Canvas;
     color: CanvasText;
@@ -246,12 +254,13 @@ body {
 #next {
     right: 5%;
 }
-#viewer.scrolled {
+#viewer {
+  position: relative;
   overflow: hidden;
+  height: 100%;
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  position: relative;
   box-shadow: 0 0 4px #ccc;
   background: white;
 }
